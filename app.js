@@ -8,11 +8,21 @@ app.set('view engine', 'ejs');
 //listen for requests
 app.listen(3000);
 
+// app.use((req, res) => {
+
+// })
+
+
 app.get('/', (req, res) => {
-    console.log('connected!!!')
+    const blogs = [
+        { title: "Yoshi masters", snippet: 'Lorem ipsum dolor sit amet consectetur' },
+        { title: "Yoshi masters", snippet: 'Lorem ipsum dolor sit amet consectetur' },
+        { title: "Yoshi masters", snippet: 'Lorem ipsum dolor sit amet consectetur' },
+    ];
+    console.log('connected!!!');
     // res.send('<p>home page</p>');
-    res.render('index', { title: 'Home'})
-})
+    res.render('index', { title: 'Home', blogs });
+});
 
 app.get('/about', (req, res) => {
     console.log('connected!!!')
