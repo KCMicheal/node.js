@@ -9,14 +9,18 @@ const app = express();
 //connect to mongoDB
 const dbURI = 'mongodb+srv://netninja:adgjmptw@sandbox.yboau.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => app.listen(3000))
+    .then((result) => app.listen(3000)
+        //console.log('connected to db')
+        )
     .catch((err) => console.log(err))
+    
 //register view engine
 app.set('view engine', 'ejs');
 
 //middleware & static files
 app.use(express.static('public'));
-app.use(morgan('dev'))
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
 
 //mongoose and mongo sandbox routes
 app.get('/add-blog', (req, res) => {
@@ -82,6 +86,18 @@ app.get('/blogs', (req, res) => {
     Blog.find().sort({ createdAt: -1 })
         .then((result) => {
             res.render('index', { title: 'All Blogs', blogs: result })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+})
+
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body);
+
+    blog.save()
+        .then((result) => {
+            res.redirect('/blogs');
         })
         .catch((err) => {
             console.log(err)
